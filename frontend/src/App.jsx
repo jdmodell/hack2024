@@ -4,6 +4,7 @@ import './App.css'
 import AllergyForm from './AllergyForm'
 import AllergenForm from './AllergenForm'
 import Graph from './Graph'
+import Facts from './Facts'
 
 function App() {
   const [allergies, setAllergies] = useState([])
@@ -16,7 +17,6 @@ function App() {
     fetchAllergies();
     fetchAllergens();
   }, [])
-
 
 
   const fetchAllergies = async () => {
@@ -67,14 +67,44 @@ function App() {
   };
 
 
+    const [selectedKind, setSelectedKind] = useState('Food');
+
+    const allergyKinds = ['Food', 'Seasonal', 'Skin', 'Medicine', 'Animals', 'Other'];
+
+    const handleKindClick = (kind) => {
+        setSelectedKind(kind);
+    };
+  
+
+
+
   return (
     <>
+    <main>
       <AllergyList allergies={allergies} updateAllergy={openEditModal} updateCallback={onUpdate}/>
+     <div id="rxnbuttons">
       <button onClick={openCreateModal}>Add a Reaction</button>
       <button onClick={openAddAllergenModal}>Add Allergens</button>
+      </div>
       <div id="graph">
       <Graph />
       </div>
+      <h2>Your Allergy Facts</h2>
+      <div className="button-container">
+                {allergyKinds.map(kind => (
+                    <button
+                        key={kind}
+                        onClick={() => handleKindClick(kind)}
+                        className={selectedKind === kind ? 'active' : ''}
+                    >
+                        {kind}
+                    </button>
+                ))}
+            </div>
+
+            {/* Render the facts based on selected kind */}
+            {selectedKind && <Facts allergyKind={selectedKind} allergies ={allergies}/>}
+
 
 
       { isModalOpen && (
@@ -94,7 +124,7 @@ function App() {
                 </div>
               </div>
             )}
-     
+     </main>
     </>
   )
   

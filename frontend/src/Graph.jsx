@@ -2,27 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 
-// Register all necessary components
+
 Chart.register(...registerables);
 
 const Graph = () => {
     const [chartData, setChartData] = useState({ labels: [], datasets: [] });
-    const [allergyKind, setAllergyKind] = useState("Food"); // Default allergy kind
-    const [timeframe, setTimeframe] = useState('week'); // Default timeframe
+    const [allergyKind, setAllergyKind] = useState("Food"); 
+    const [timeframe, setTimeframe] = useState('week'); 
     const allergyKinds = ['Food', 'Seasonal', 'Skin', 'Medicine', 'Animals', 'Other'];
-    const timeframes = ['week', 'month', 'year']; // Define available timeframes
+    const timeframes = ['week', 'month', 'year']; 
 
     const fetchAllergyData = async (kind, timeframe) => {
         const response = await fetch(`http://127.0.0.1:5000/allergies/last_${timeframe}?kind=${kind}`);
         const data = await response.json();
 
-        // Update chart data
+      
         setChartData({
-            labels: data.dates, // Dates as labels
+            labels: data.dates, 
             datasets: [
                 {
                     label: `${kind} Allergies`,
-                    data: data.counts, // Counts of allergies for each timeframe
+                    data: data.counts, 
                     fill: false,
                     borderColor: 'rgba(75, 192, 192, 1)',
                     tension: 0.1,
@@ -33,18 +33,18 @@ const Graph = () => {
     };
 
     useEffect(() => {
-        fetchAllergyData(allergyKind, timeframe); // Fetch data on mount and when selections change
+        fetchAllergyData(allergyKind, timeframe); 
 
-        const interval = setInterval(() => fetchAllergyData(allergyKind, timeframe), 60000); // Refresh every 60 seconds
-        return () => clearInterval(interval); // Cleanup interval on component unmount
-    }, [allergyKind, timeframe]); // Depend on both allergyKind and timeframe
+        const interval = setInterval(() => fetchAllergyData(allergyKind, timeframe), 60000); 
+        return () => clearInterval(interval); 
+    }, [allergyKind, timeframe]); 
 
     const handleKindChange = (e) => {
-        setAllergyKind(e.target.value); // Update selected allergy kind
+        setAllergyKind(e.target.value); 
     };
 
     const handleTimeframeChange = (e) => {
-        setTimeframe(e.target.value); // Update selected timeframe
+        setTimeframe(e.target.value); 
     };
 
 
@@ -61,7 +61,7 @@ const Graph = () => {
             <select onChange={handleTimeframeChange} value={timeframe}>
                 {timeframes.map((frame) => (
                     <option key={frame} value={frame}>
-                        {frame.charAt(0).toUpperCase() + frame.slice(1)} {/* Capitalize the first letter */}
+                        {frame.charAt(0).toUpperCase() + frame.slice(1)} 
                     </option>
                 ))}
             </select>
@@ -71,7 +71,7 @@ const Graph = () => {
                     
                     plugins: {
                       legend: {
-                          display: false, // Hides the legend
+                          display: false,
                       },
                   },
                 }}

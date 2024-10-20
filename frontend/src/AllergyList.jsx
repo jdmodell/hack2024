@@ -22,6 +22,7 @@ const AllergyList = ({allergies, updateAllergy, updateCallback}) => {
   
   return <div id="reactions">
         <h2>Reactions</h2>
+        <div id="table">
         <table>
             <thead>
                 <tr>
@@ -49,6 +50,7 @@ const AllergyList = ({allergies, updateAllergy, updateCallback}) => {
                 ))}
             </tbody>
         </table>
+        </div>
     </div>
 }
 
